@@ -1,0 +1,20 @@
+# Intellij Idea project files
+.idea
+*.iml
+*.ipr
+*.iws
+jmeter.log
+
+# gradle config
+.gradle
+.nb-*
+
+# maven config
+target
+
+# project binaries
+build
+out
+
+# sonar
+sonar-project.properties
