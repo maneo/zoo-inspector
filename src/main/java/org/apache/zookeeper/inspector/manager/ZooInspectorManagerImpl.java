@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -266,8 +267,9 @@ public class ZooInspectorManagerImpl implements ZooInspectorManager {
             try {
                 Stat s = zooKeeper.exists(nodePath, false);
                 if (s != null) {
-                    return this.zooKeeper.getChildren(nodePath, false).get(
-                            childIndex);
+                    List<String> children = this.zooKeeper.getChildren(nodePath, false);
+                    Collections.sort(children);
+                    return children.get(childIndex);
                 }
             } catch (Exception e) {
                 LoggerFactory.getLogger().error(
@@ -297,6 +299,7 @@ public class ZooInspectorManagerImpl implements ZooInspectorManager {
             String child = nodePath.substring(index + 1);
             if (parentPath != null && parentPath.length() > 0) {
                 List<String> children = this.getChildren(parentPath);
+                Collections.sort(children);
                 if (children != null) {
                     return children.indexOf(child);
                 }
