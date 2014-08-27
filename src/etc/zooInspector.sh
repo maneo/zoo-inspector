@@ -15,4 +15,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-java -cp "zookeeper-dev-ZooInspector.jar;lib\*;lib" org.apache.zookeeper.inspector.ZooInspector
+java -jar {project.build.finalName}.jar

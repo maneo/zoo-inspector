@@ -7,7 +7,7 @@
     <version>${zookeeper.version}</version>
     <packaging>jar</packaging>
     <name>Zoo inspector</name>
- 
+
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -44,7 +44,7 @@
     </dependencies>
 
     <build>
-        <finalName>zookeeper-${zookeeper.version}-zooinspector</finalName>
+        <finalName>zooinspector-${zookeeper.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -60,14 +60,24 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.5</version>
                 <configuration>
-                <archive>
-                    <manifest>
-                        <addClasspath>true</addClasspath>
-                        <mainClass>org.apache.zookeeper.inspector.ZooInspector</mainClass>
-                    </manifest>
-                </archive>
-            </configuration>
-        </plugin>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>org.apache.zookeeper.inspector.ZooInspector</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/distribution.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -75,5 +85,5 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <zookeeper.version>3.5.0-alpha</zookeeper.version>
     </properties>
-  
+
 </project>

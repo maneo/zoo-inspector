@@ -54,7 +54,7 @@ public class ZooInspectorAboutDialog extends JDialog {
         aboutPane.setEditable(false);
         aboutPane.setOpaque(false);
         java.net.URL aboutURL = ZooInspectorAboutDialog.class
-                .getResource("about.html");
+                .getResource("/about.html");
         try {
             aboutPane.setPage(aboutURL);
         } catch (IOException e) {
