@@ -40,7 +40,7 @@
     </fileSets>
     <dependencySets>
         <dependencySet>
-            <outputDirectory>/lib</outputDirectory>
+            <outputDirectory>/</outputDirectory>
             <unpack>false</unpack>
             <scope>runtime</scope>
         </dependencySet>

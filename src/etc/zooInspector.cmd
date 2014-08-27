@@ -15,4 +15,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-java -jar {project.build.finalName}.jar
+java -jar ${project.build.finalName}.jar
