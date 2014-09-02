@@ -7,9 +7,10 @@ import org.apache.zookeeper.inspector.manager.ZooInspectorManager;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
-public class AddNodeAction implements ActionListener {
+public class AddNodeAction extends AbstractAction {
 
     private JPanel panel;
     private ZooInspectorTreeViewer treeViewer;
@@ -21,6 +22,7 @@ public class AddNodeAction implements ActionListener {
         this.panel = parentPanel;
         this.treeViewer = treeViewer;
         this.zooInspectorManager = zooInspectorManager;
+        //putValue(MNEMONIC_KEY, KeyEvent.VK_N);
     }
 
     public void actionPerformed(ActionEvent e) {
