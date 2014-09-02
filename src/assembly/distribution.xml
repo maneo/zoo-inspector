@@ -8,10 +8,17 @@
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <fileSet>
-            <directory>${project.basedir}/src/etc</directory>
-            <outputDirectory>/</outputDirectory>
+            <directory>${project.basedir}/config</directory>
+            <outputDirectory>/config/</outputDirectory>
             <includes>
                 <include>*.cfg</include>
+            </includes>
+            <filtered>true</filtered>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/config</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
                 <include>*.cmd</include>
                 <include>*.sh</include>
             </includes>
@@ -32,10 +39,6 @@
             <includes>
                 <include>*.jar</include>
             </includes>
-        </fileSet>
-        <fileSet>
-            <directory>${project.build.directory}/site</directory>
-            <outputDirectory>docs</outputDirectory>
         </fileSet>
     </fileSets>
     <dependencySets>

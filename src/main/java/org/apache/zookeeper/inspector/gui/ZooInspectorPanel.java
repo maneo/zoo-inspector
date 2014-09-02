@@ -17,7 +17,14 @@
  */
 package org.apache.zookeeper.inspector.gui;
 
-import java.awt.BorderLayout;
+import org.apache.zookeeper.inspector.gui.actions.AddNodeAction;
+import org.apache.zookeeper.inspector.gui.actions.DeleteNodeAction;
+import org.apache.zookeeper.inspector.gui.nodeviewer.ZooInspectorNodeViewer;
+import org.apache.zookeeper.inspector.logger.LoggerFactory;
+import org.apache.zookeeper.inspector.manager.ZooInspectorManager;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -25,18 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
-
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JToolBar;
-import javax.swing.SwingWorker;
-
-import org.apache.zookeeper.inspector.gui.nodeviewer.ZooInspectorNodeViewer;
-import org.apache.zookeeper.inspector.logger.LoggerFactory;
-import org.apache.zookeeper.inspector.manager.ZooInspectorManager;
 
 /**
  * The parent {@link JPanel} for the whole application
@@ -50,13 +45,13 @@ public class ZooInspectorPanel extends JPanel implements
     private final ZooInspectorManager zooInspectorManager;
 
     private final List<NodeViewersChangeListener> listeners = new ArrayList<NodeViewersChangeListener>();
+
     {
         listeners.add(this);
     }
 
     /**
-     * @param zooInspectorManager
-     *            - the {@link ZooInspectorManager} for the application
+     * @param zooInspectorManager - the {@link ZooInspectorManager} for the application
      */
     public ZooInspectorPanel(final ZooInspectorManager zooInspectorManager, final IconResource iconResource) {
         this.zooInspectorManager = zooInspectorManager;
@@ -82,7 +77,7 @@ public class ZooInspectorPanel extends JPanel implements
         treeViewer = new ZooInspectorTreeViewer(zooInspectorManager,
                 nodeViewersPanel, iconResource);
         this.setLayout(new BorderLayout());
-        
+
         toolbar.addActionListener(Toolbar.Button.connect, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ZooInspectorConnectionPropertiesDialog zicpd = new ZooInspectorConnectionPropertiesDialog(
@@ -102,74 +97,12 @@ public class ZooInspectorPanel extends JPanel implements
                 treeViewer.refreshView();
             }
         });
-        toolbar.addActionListener(Toolbar.Button.addNode, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                final List<String> selectedNodes = treeViewer
-                        .getSelectedNodes();
-                if (selectedNodes.size() == 1) {
-                    final String nodeName = JOptionPane.showInputDialog(
-                            ZooInspectorPanel.this,
-                            "Please Enter a name for the new node",
-                            "Create Node", JOptionPane.INFORMATION_MESSAGE);
-                    if (nodeName != null && nodeName.length() > 0) {
-                        SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
+        toolbar.addActionListener(Toolbar.Button.addNode,
+                new AddNodeAction(this, treeViewer, zooInspectorManager));
+        toolbar.addActionListener(Toolbar.Button.deleteNode,
+                new DeleteNodeAction(this, treeViewer, zooInspectorManager));
 
-                            @Override
-                            protected Boolean doInBackground() throws Exception {
-                                return ZooInspectorPanel.this.zooInspectorManager
-                                        .createNode(selectedNodes.get(0),
-                                                nodeName);
-                            }
 
-                            @Override
-                            protected void done() {
-                                treeViewer.refreshView();
-                            }
-                        };
-                        worker.execute();
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(ZooInspectorPanel.this,
-                            "Please select 1 parent node for the new node.");
-                }
-            }
-        });
-        toolbar.addActionListener(Toolbar.Button.deleteNode, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                final List<String> selectedNodes = treeViewer
-                        .getSelectedNodes();
-                if (selectedNodes.size() == 0) {
-                    JOptionPane.showMessageDialog(ZooInspectorPanel.this,
-                            "Please select at least 1 node to be deleted");
-                } else {
-                    int answer = JOptionPane.showConfirmDialog(
-                            ZooInspectorPanel.this,
-                            "Are you sure you want to delete the selected nodes?"
-                                    + "(This action cannot be reverted)",
-                            "Confirm Delete", JOptionPane.YES_NO_OPTION,
-                            JOptionPane.WARNING_MESSAGE);
-                    if (answer == JOptionPane.YES_OPTION) {
-                        SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
-
-                            @Override
-                            protected Boolean doInBackground() throws Exception {
-                                for (String nodePath : selectedNodes) {
-                                    ZooInspectorPanel.this.zooInspectorManager
-                                            .deleteNode(nodePath);
-                                }
-                                return true;
-                            }
-
-                            @Override
-                            protected void done() {
-                                treeViewer.refreshView();
-                            }
-                        };
-                        worker.execute();
-                    }
-                }
-            }
-        });
         toolbar.addActionListener(Toolbar.Button.nodeViewers, new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -195,9 +128,8 @@ public class ZooInspectorPanel extends JPanel implements
     }
 
     /**
-     * @param connectionProps
-     *            the {@link Properties} for connecting to the zookeeper
-     *            instance
+     * @param connectionProps the {@link Properties} for connecting to the zookeeper
+     *                        instance
      */
     public void connect(final Properties connectionProps) {
         SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
@@ -239,16 +171,15 @@ public class ZooInspectorPanel extends JPanel implements
     }
 
     /**
-	 * 
-	 */
+     *
+     */
     public void disconnect() {
         disconnect(false);
     }
 
     /**
-     * @param wait
-     *            - set this to true if the method should only return once the
-     *            application has successfully disconnected
+     * @param wait - set this to true if the method should only return once the
+     *             application has successfully disconnected
      */
     public void disconnect(boolean wait) {
         SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {

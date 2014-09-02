@@ -57,7 +57,7 @@ Using ZooInspector
 	(DataEncryptionManagers are explained in further detail in the 'Creating and Using Plugins' section below).  You can
 	also set the entered information as the defaults so that when you first start ZooInspector these settings are 
 	automatically loaded into this dialog.  Pressing the OK button with connect to your ZooKeeper instance and show the
-	current node tree on the left of the main panel.
+	current node tree on the left of the main parentPanel.
 	
 	Clicking a node in the node tree will load the data for that node into the node viewers.  Three node viewers are 
 	currently distributed with ZooInspector:
@@ -76,7 +76,7 @@ Creating and Using Plugins
 	There are two types of plugin which can be used with ZooInspector:
 		1. DataEncryptionManager - This specifies how data should be encrypted and decrypted when working with a 
 		   zookeeper instance.
-		2. ZooInspectorNodeViewer - This is a GUI panel which provides a view of visualisation on a node.
+		2. ZooInspectorNodeViewer - This is a GUI parentPanel which provides a view of visualisation on a node.
 	More information on these interfaces can be found in the javadocs for this module.
 	
 	To use a plugin in ZooInspector, build the plugin to a jar and copy the jar to the lib sub-directory.  Edit the 
@@ -91,4 +91,4 @@ Creating and Using Plugins
 	button.  The Node Viewer will be instantiated and should appear in the list.  You can change the order of the Node 
 	viewers by clicking the up and dpwn buttons and delete a Node Viewer by clicking the delete button.  You can save 
 	to configuration to a file or set it as the default if necessary. Then click the 'OK' button and your Node Viewer 
-	should appear in the tabs on the right of the main panel.
+	should appear in the tabs on the right of the main parentPanel.

@@ -44,6 +44,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import org.apache.zookeeper.inspector.gui.actions.AddNodeAction;
+import org.apache.zookeeper.inspector.gui.actions.DeleteNodeAction;
 import org.apache.zookeeper.inspector.manager.NodeListener;
 import org.apache.zookeeper.inspector.manager.ZooInspectorManager;
 
@@ -68,10 +70,18 @@ public class ZooInspectorTreeViewer extends JPanel implements NodeListener {
      */
     public ZooInspectorTreeViewer(
             final ZooInspectorManager zooInspectorManager,
-            TreeSelectionListener listener, IconResource iconResource) {
+            TreeSelectionListener listener,
+            IconResource iconResource) {
         this.zooInspectorManager = zooInspectorManager;
         this.setLayout(new BorderLayout());
         final JPopupMenu popupMenu = new JPopupMenu();
+
+        final JMenuItem addNode = new JMenuItem("Add Node");
+        addNode.addActionListener(new AddNodeAction(this, this, zooInspectorManager));
+
+        final JMenuItem deleteNode = new JMenuItem("Delete Node");
+        deleteNode.addActionListener(new DeleteNodeAction(this, this, zooInspectorManager));
+
         final JMenuItem addNotify = new JMenuItem("Add Change Notification");
         this.toasterManager = new Toaster();
         this.toasterManager.setBorderColor(Color.BLACK);
@@ -93,6 +103,7 @@ public class ZooInspectorTreeViewer extends JPanel implements NodeListener {
                 zooInspectorManager.removeWatchers(selectedNodes);
             }
         });
+
         tree = new JTree(new DefaultMutableTreeNode());
         tree.setCellRenderer(new ZooInspectorTreeCellRenderer(iconResource));
         tree.setEditable(false);
@@ -105,10 +116,13 @@ public class ZooInspectorTreeViewer extends JPanel implements NodeListener {
                     // watched, and only show remove if a selected node is being
                     // watched
                     popupMenu.removeAll();
+                    popupMenu.add(addNode);
+                    popupMenu.add(deleteNode);
                     popupMenu.add(addNotify);
                     popupMenu.add(removeNotify);
-                    popupMenu.show(ZooInspectorTreeViewer.this, e.getX(), e
-                            .getY());
+                    popupMenu.show(ZooInspectorTreeViewer.this,
+                            e.getX(),
+                            e.getY());
                 }
             }
         });
