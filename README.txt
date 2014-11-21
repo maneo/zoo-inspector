@@ -1,4 +1,8 @@
 ﻿==========================================
+Fork is addressing issues described in https://issues.apache.org/jira/browse/ZOOKEEPER-2087 + a little bit maven to simplify work with code.
+==========================================
+
+==========================================
 ZooInspector - Browser and Editor for ZooKeeper Instances
 Author: Colin Goodheart-Smithe
 Date: February 2010
